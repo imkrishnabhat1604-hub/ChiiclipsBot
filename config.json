@@ -1,0 +1,10 @@
+{
+  "watermark_type": "text",
+  "watermark_content": "@MyViralBot",
+  "watermark_position": "bottom-right",
+  "watermark_opacity": "0.8",
+  "watermark_color": "white",
+  "ai_prompt": "Analyze this video/transcript. Identify high-viral moments scoring between 8.5 and 10 out of 10. Each clip must be strictly between 0 and 30 seconds long. Return ONLY a JSON array of objects with keys 'start' and 'end' in seconds. Example: [{\"start\": 45, \"end\": 70}]",
+  "ytdlp_flags": "--format bestvideo+bestaudio/best",
+  "ffmpeg_preset": "ultrafast"
+}
