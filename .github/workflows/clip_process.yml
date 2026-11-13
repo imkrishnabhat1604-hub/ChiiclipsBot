@@ -1,0 +1,61 @@
+name: Clip Processing Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: 'Video URL'
+        required: true
+        type: string
+      timestamps:
+        description: 'JSON list of timestamps'
+        required: true
+        type: string
+      aspect_ratio:
+        description: 'Target Aspect Ratio (9:16, 1:1, 4:5)'
+        required: true
+        type: string
+      watermark_config:
+        description: 'JSON string of watermark settings'
+        required: true
+        type: string
+      telegram_chat_id:
+        description: 'Telegram Chat ID to send clips'
+        required: true
+        type: string
+      telegram_bot_token:
+        description: 'Telegram Bot Token'
+        required: true
+        type: string
+
+jobs:
+  process-clips:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python Dependencies
+        run: |
+          pip install yt-dlp requests
+
+      - name: Run Clip Processing Script
+        env:
+          VIDEO_URL: ${{ github.event.inputs.video_url }}
+          TIMESTAMPS: ${{ github.event.inputs.timestamps }}
+          ASPECT_RATIO: ${{ github.event.inputs.aspect_ratio }}
+          WATERMARK_CONFIG: ${{ github.event.inputs.watermark_config }}
+          TELEGRAM_CHAT_ID: ${{ github.event.inputs.telegram_chat_id }}
+          TELEGRAM_BOT_TOKEN: ${{ github.event.inputs.telegram_bot_token }}
+        run: |
+          python process.py
